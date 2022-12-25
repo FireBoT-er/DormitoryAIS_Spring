@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="@{${title} + ' - Общежитие'}"></title>
+    <link href="/Content/bootstrap.css" rel="stylesheet"/>
+    <link href="/Content/headerfix.css" rel="stylesheet"/>
+    <link href="/Content/site.css" rel="stylesheet"/>
+    <script src="/Scripts/modernizr-2.8.3.js"></script>
+</head>
+<body>
+    <div th:replace="Shared/header::header"></div>
+
+    <div class="container body-content">
+        <h2 th:text="${title}"></h2>
+
+        <form action="#" th:action="@{/Violations/Edit/}+${id}" th:object="${violation}" method="post">
+            <div class="form-horizontal">
+                <hr />
+
+                <input id="ID" type="hidden" th:field="*{id}" />
+
+                <div class="form-group">
+                    <label class="control-label col-md-2">Описание</label>
+                    <div class="col-md-10">
+                        <textarea class="form-control text-box multi-line" id="Description" type="text" th:field="*{description}"></textarea>
+                        <span class="field-validation-valid text-danger" th:if="${#fields.hasErrors('description')}" th:errors="*{description}"></span>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label col-md-2">Мера наказания</label>
+                    <div class="col-md-10">
+                        <textarea class="form-control text-box multi-line" id="Punishment" type="text" th:field="*{punishment}"></textarea>
+                        <span class="field-validation-valid text-danger" th:if="${#fields.hasErrors('punishment')}" th:errors="*{punishment}"></span>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label col-md-2">Дата совершения</label>
+                    <div class="col-md-10">
+                        <input class="form-control text-box single-line" id="DateVl" type="date" th:field="*{dateVl}" />
+                        <span class="field-validation-valid text-danger" th:if="${#fields.hasErrors('dateVl')}" th:errors="*{dateVl}"></span>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label col-md-2">Время совершения</label>
+                    <div class="col-md-10">
+                        <input class="form-control text-box single-line" id="TimeVl" type="time" th:field="*{timeVl}" />
+                        <span class="field-validation-valid text-danger" th:if="${#fields.hasErrors('timeVl')}" th:errors="*{timeVl}"></span>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-md-offset-2 col-md-10">
+                        <input type="submit" value="Далее" class="btn btn-default" />
+                    </div>
+                </div>
+            </div>
+        </form>
+
+        <div>
+            <a href="javascript:history.back()">Назад</a>
+        </div>
+
+        <hr/>
+        <footer></footer>
+    </div>
+
+    <script src="/Scripts/jquery-3.4.1.js"></script>
+    <script src="/Scripts/bootstrap.js"></script>
+    <script src="/Scripts/localization/messages_ru.js"></script>
+</body>
+</html>

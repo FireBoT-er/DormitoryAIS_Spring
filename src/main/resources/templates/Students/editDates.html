@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="@{${title} + ' - Общежитие'}"></title>
+    <link href="/Content/bootstrap.css" rel="stylesheet"/>
+    <link href="/Content/headerfix.css" rel="stylesheet"/>
+    <link href="/Content/site.css" rel="stylesheet"/>
+    <script src="/Scripts/modernizr-2.8.3.js"></script>
+</head>
+<body>
+    <div th:replace="Shared/header::header"></div>
+
+    <div class="container body-content">
+        <h2 th:text="${title}"></h2>
+
+        <form action="#" th:action="@{/Students/Edit/}+${id}+@{/EditDates}" th:object="${checkInsOuts}" method="post">
+            <div class="form-horizontal">
+                <hr />
+
+                <div class="form-group">
+                    <label class="control-label col-md-2">Дата заселения</label>
+                    <div class="col-md-10">
+                        <input class="form-control text-box single-line" id="CheckInDate" type="date" th:field="*{checkInDate}" />
+                        <span class="field-validation-valid text-danger" th:text="${checkInDateError}"></span>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label col-md-2">Дата выселения</label>
+                    <div class="col-md-10">
+                        <input class="form-control text-box single-line" id="CheckOutDate" type="date" th:field="*{checkOutDate}" />
+                        <span class="field-validation-valid text-danger" th:text="${checkOutDateError}"></span>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-md-offset-2 col-md-10">
+                        <input id="ID" name="id" type="hidden" th:value="${id}" />
+                        <input id="Surname" name="surname" type="hidden" th:value="${surname}" />
+                        <input id="Name" name="name" type="hidden" th:value="${name}" />
+                        <input id="Patronymic" name="patronymic" type="hidden" th:value="${patronymic}" />
+                        <input id="Photo" name="photo" type="hidden" th:value="${photo}" />
+                        <input id="PhotoFileName" name="photoFileName" type="hidden" th:value="${photoFileName}" />
+                        <input id="Sex" name="sex" type="hidden" th:value="${sex}" />
+                        <input id="Birthday" name="birthday" type="hidden" th:value="${birthday}" />
+                        <input id="RecordBookNumber" name="recordBookNumber" type="hidden" th:value="${recordBookNumber}" />
+                        <input id="RoomID" name="roomId" type="hidden" th:value="${roomId}" />
+
+                        <input type="submit" value="Готово" class="btn btn-default" />
+                    </div>
+                </div>
+            </div>
+        </form>
+
+        <div>
+            <a href="javascript:history.back()">Назад</a>
+        </div>
+
+        <hr/>
+        <footer></footer>
+    </div>
+
+    <script src="/Scripts/jquery-3.4.1.js"></script>
+    <script src="/Scripts/bootstrap.js"></script>
+    <script src="/Scripts/localization/messages_ru.js"></script>
+</body>
+</html>

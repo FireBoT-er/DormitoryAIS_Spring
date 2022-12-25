@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="@{${title} + ' - Общежитие'}"></title>
+    <link href="/Content/bootstrap.css" rel="stylesheet"/>
+    <link href="/Content/headerfix.css" rel="stylesheet"/>
+    <link href="/Content/site.css" rel="stylesheet"/>
+    <script src="/Scripts/modernizr-2.8.3.js"></script>
+</head>
+<body>
+    <div th:replace="Shared/header::header"></div>
+
+    <div class="container body-content">
+        <h2 th:text="${title}"></h2>
+
+        <table class="table">
+            <tr>
+                <th>Вид</th>
+                <th>На складе</th>
+                <th></th>
+            </tr>
+            <tr th:each="inventoryToView : ${inventoriesToView}">
+                <td th:text="${inventoryToView.inventory.invType}"></td>
+                <td th:text="${inventoryToView.inStock}"></td>
+                <td>
+                    <form action="#" th:action="@{/IssuedInventories/Create}" th:object="${inventoryToView}" method="post">
+                        <div>
+                            <input id="InventoryID" name="inventoryId" type="hidden" th:value="${inventoryToView.inventory.id}" />
+                            <input type="submit" value="Выбрать" class="btn btn-primary">
+                        </div>
+                    </form>
+                </td>
+            </tr>
+        </table>
+
+        <div>
+            <a href="/IssuedInventories/Index">Вернуться к списку</a>
+        </div>
+
+        <hr/>
+        <footer></footer>
+    </div>
+
+    <script src="/Scripts/jquery-3.4.1.js"></script>
+    <script src="/Scripts/bootstrap.js"></script>
+    <script src="/Scripts/localization/messages_ru.js"></script>
+</body>
+</html>

@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="@{${title} + ' - Общежитие'}"></title>
+    <link href="/Content/bootstrap.css" rel="stylesheet"/>
+    <link href="/Content/headerfix.css" rel="stylesheet"/>
+    <link href="/Content/site.css" rel="stylesheet"/>
+    <script src="/Scripts/modernizr-2.8.3.js"></script>
+</head>
+<body>
+    <div th:replace="Shared/header::header"></div>
+
+    <div class="container body-content">
+        <h2 th:text="${title}"></h2>
+
+        <h3>Вы уверены, что хотите удалить этого студента?</h3>
+        <h5>Также будет удалена информация о его нарушениях, посетителях, выданном инвентаре и проживании в комнате.</h5>
+        <div>
+            <hr />
+            <dl class="dl-horizontal">
+                <dt>Фамилия</dt>
+                <dd th:text="${studentsToView.student.surname}"></dd>
+
+                <dt>Имя</dt>
+                <dd th:text="${studentsToView.student.name}"></dd>
+
+                <dt>Отчество</dt>
+                <dd th:text="${studentsToView.student.patronymic}"></dd>
+
+                <dt>Пол</dt>
+                <dd>
+                    <span th:if="${studentsToView.student.sex}">М</span>
+                    <span th:unless="${studentsToView.student.sex}">Ж</span>
+                </dd>
+
+                <dt>Дата рождения</dt>
+                <dd th:text="${#temporals.format(studentsToView.student.birthday,'dd.MM.yyyy')}"></dd>
+
+                <dt>Фотография</dt>
+                <dd>
+                    <a th:href="@{'/Students/ShowPhoto/' + ${studentsToView.student.id}}" target="_blank">Открыть</a>
+                </dd>
+
+                <dt>Номер зачётной книжки</dt>
+                <dd th:text="${studentsToView.student.recordBookNumber}"></dd>
+
+                <dt>Номер комнаты</dt>
+                <dd>
+                    <a th:text="${studentsToView.room.roomNumber}" th:href="@{'/Rooms/Details/' + ${studentsToView.room.id}}" target="_blank"></a>
+                </dd>
+
+                <dt>Дата заселения</dt>
+                <dd th:text="${#temporals.format(studentsToView.checkInDate,'dd.MM.yyyy')}"></dd>
+
+                <dt>Дата выселения</dt>
+                <dd th:text="${#temporals.format(studentsToView.checkOutDate,'dd.MM.yyyy')}"></dd>
+            </dl>
+
+            <form action="#" th:action="@{/Students/Delete/}+${id}" method="post">
+                <div class="form-actions no-color">
+                    <input type="submit" value="Удалить" class="btn btn-default" /> |
+                    <a href="javascript:history.back()">Назад</a>
+                </div>
+            </form>
+        </div>
+
+        <hr/>
+        <footer></footer>
+    </div>
+
+    <script src="/Scripts/jquery-3.4.1.js"></script>
+    <script src="/Scripts/bootstrap.js"></script>
+    <script src="/Scripts/localization/messages_ru.js"></script>
+</body>
+</html>

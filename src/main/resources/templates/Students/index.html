@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="@{${title} + ' - Общежитие'}"></title>
+    <link href="/Content/bootstrap.css" rel="stylesheet"/>
+    <link href="/Content/headerfix.css" rel="stylesheet"/>
+    <link href="/Content/site.css" rel="stylesheet"/>
+    <script src="/Scripts/modernizr-2.8.3.js"></script>
+</head>
+<body>
+    <div th:replace="Shared/header::header"></div>
+
+    <div class="container body-content">
+        <h2 th:text="${title}"></h2>
+
+        <p>
+            <a href="/Students/Create">Заселить</a>
+        </p>
+
+        <form action="#" th:action="@{/Students/ResidentsSwitch}" th:object="${residentsOnly}" method="post">
+            <p>
+                <input th:checked="${residentsOnly}" id="residentsOnly" name="residentsOnly" onclick="this.form.submit();" type="checkbox" />
+                Только проживающие в данный момент
+            </p>
+        </form>
+
+        <table th:if="${studentsToView.size() > 0}" class="table table-hover">
+            <tr>
+                <th>Фамилия</th>
+                <th>Имя</th>
+                <th>Отчество</th>
+                <th>Пол</th>
+                <th>Дата рождения</th>
+                <th>Фотография</th>
+                <th>Номер зачётной книжки</th>
+                <th>Номер комнаты</th>
+                <th>Дата заселения</th>
+                <th>Дата выселения</th>
+                <th style="width: 10rem;"></th>
+            </tr>
+            <tr th:each="studentToView : ${studentsToView}">
+                <td th:text="${studentToView.student.surname}"></td>
+                <td th:text="${studentToView.student.name}"></td>
+                <td th:text="${studentToView.student.patronymic}"></td>
+                <td>
+                    <span th:if="${studentToView.student.sex}">М</span>
+                    <span th:unless="${studentToView.student.sex}">Ж</span>
+                </td>
+                <td th:text="${#temporals.format(studentToView.student.birthday,'dd.MM.yyyy')}"></td>
+                <td>
+                    <a th:href="@{'/Students/ShowPhoto/' + ${studentToView.student.id}}" target="_blank">Открыть</a>
+                </td>
+                <td th:text="${studentToView.student.recordBookNumber}"></td>
+                <td>
+                    <a th:text="${studentToView.room.roomNumber}" th:href="@{'/Rooms/Details/' + ${studentToView.room.id}}" target="_blank"></a>
+                </td>
+                <td th:text="${#temporals.format(studentToView.checkInDate,'dd.MM.yyyy')}"></td>
+                <td th:text="${#temporals.format(studentToView.checkOutDate,'dd.MM.yyyy')}"></td>
+                <td>
+                    <a th:href="@{'/Students/Edit/' + ${studentToView.student.id}}">Изменить</a> |
+                    <a th:href="@{'/Students/Details/' + ${studentToView.student.id}}">Подробнее</a> |
+                    <a th:href="@{'/Students/Delete/' + ${studentToView.student.id}}">Удалить</a>
+                </td>
+            </tr>
+        </table>
+
+        <br/>
+        <hr/>
+        <footer></footer>
+    </div>
+
+    <script src="/Scripts/jquery-3.4.1.js"></script>
+    <script src="/Scripts/bootstrap.js"></script>
+    <script src="/Scripts/localization/messages_ru.js"></script>
+</body>
+</html>

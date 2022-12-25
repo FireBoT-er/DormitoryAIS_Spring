@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="@{${title} + ' - Общежитие'}"></title>
+    <link href="/Content/bootstrap.css" rel="stylesheet"/>
+    <link href="/Content/headerfix.css" rel="stylesheet"/>
+    <link href="/Content/site.css" rel="stylesheet"/>
+    <script src="/Scripts/modernizr-2.8.3.js"></script>
+</head>
+<body>
+    <div th:replace="Shared/header::header"></div>
+
+    <div class="container body-content">
+        <h2 th:text="${title}"></h2>
+
+        <form action="#" th:action="@{/Students/Create}" th:object="${student}" method="post" enctype="multipart/form-data">
+            <div class="form-horizontal">
+                <hr />
+
+                <div class="form-group">
+                    <label class="control-label col-md-2">Фамилия</label>
+                    <div class="col-md-10">
+                        <input class="form-control text-box single-line" id="Surname" type="text" th:field="*{surname}" />
+                        <span class="field-validation-valid text-danger" th:if="${#fields.hasErrors('surname')}" th:errors="*{surname}"></span>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label col-md-2">Имя</label>
+                    <div class="col-md-10">
+                        <input class="form-control text-box single-line" id="Name" type="text" th:field="*{name}" />
+                        <span class="field-validation-valid text-danger" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></span>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label col-md-2">Отчество</label>
+                    <div class="col-md-10">
+                        <input class="form-control text-box single-line" id="Patronymic" type="text" th:field="*{patronymic}" />
+                        <span class="field-validation-valid text-danger" th:if="${#fields.hasErrors('patronymic')}" th:errors="*{patronymic}"></span>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label col-md-2">Пол</label>
+                    <div class="col-md-10">
+                        <div class="checkbox">
+                            <select class="form-control" id="sex" th:field="*{sex}">
+                                <option value="True">Мужской</option>
+                                <option value="False">Женский</option>
+                            </select>
+                            <span class="field-validation-valid text-danger" th:if="${#fields.hasErrors('sex')}" th:errors="*{sex}"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label col-md-2">Дата рождения</label>
+                    <div class="col-md-10">
+                        <input class="form-control text-box single-line" id="Birthday" type="date" th:field="*{birthday}" />
+                        <span class="field-validation-valid text-danger" th:if="${#fields.hasErrors('birthday')}" th:errors="*{birthday}"></span>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label col-md-2">Фотография</label>
+                    <div class="col-md-10">
+                        <input type="file" name="upload" accept=".jpg, .jpeg, .png" />
+                        <span class="field-validation-valid text-danger" th:text="${photoFileNameError}"></span>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label col-md-2">Номер зачётной книжки</label>
+                    <div class="col-md-10">
+                        <input class="form-control text-box single-line" id="RecordBookNumber" placeholder="ААА-000-00" type="text" th:field="*{recordBookNumber}" />
+                        <span class="field-validation-error text-danger" style="white-space: pre;" th:if="${#fields.hasErrors('recordBookNumber')}" th:errors="*{recordBookNumber}"></span>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-md-offset-2 col-md-10">
+                        <input type="submit" value="Далее" class="btn btn-default" />
+                    </div>
+                </div>
+            </div>
+        </form>
+
+        <div>
+            <a href="/Students/Index">Вернуться к списку</a>
+        </div>
+
+        <hr/>
+        <footer></footer>
+    </div>
+
+    <script src="/Scripts/jquery-3.4.1.js"></script>
+    <script src="/Scripts/bootstrap.js"></script>
+    <script src="/Scripts/localization/messages_ru.js"></script>
+</body>
+</html>

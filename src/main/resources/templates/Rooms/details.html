@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="@{${title} + ' - Общежитие'}"></title>
+    <link href="/Content/bootstrap.css" rel="stylesheet"/>
+    <link href="/Content/headerfix.css" rel="stylesheet"/>
+    <link href="/Content/site.css" rel="stylesheet"/>
+    <script src="/Scripts/modernizr-2.8.3.js"></script>
+</head>
+<body>
+    <div th:replace="Shared/header::header"></div>
+
+    <div class="container body-content">
+        <h1 style="text-align: center;" th:text="${title}"></h1>
+
+        <br />
+        <table class="table table-bordered" style="margin-left: 35%; width: 30%;">
+            <tr>
+                <th style="width: 50%;">Номер</th>
+                <td th:text="${room.roomNumber}"></td>
+            </tr>
+            <tr>
+                <th>Количество мест</th>
+                <td th:text="${room.beds}"></td>
+            </tr>
+        </table>
+
+        <br />
+        <h2 style="text-align: center;">Проживающие</h2>
+
+        <br />
+        <div th:if="${residents.size() > 0}" style="margin-left: 1.5%; display: flex; flex-wrap: wrap; justify-content: center;">
+            <div th:each="resident : ${residents}" class="col-md-4" style="background-color: #e9e9e9; border-radius: 25px; padding-top: 1rem; padding-right: 1rem; margin-right: 2rem; margin-bottom: 2rem; width: 34rem;">
+                <div style="display: flex; justify-content: center;">
+                    <p style="font-weight: bold;" th:text="@{${resident.surname} + ' ' + ${resident.name} + ' ' + ${resident.patronymic}}"></p>
+                </div>
+
+                <p style="text-align: center;"><a class="btn btn-default" target="_blank" th:href="@{'/Students/Details/' + ${resident.id}}">Подробнее &raquo;</a></p>
+            </div>
+        </div>
+        <div th:unless="${residents.size() > 0}">
+            <h4 style="text-align: center;">Комната свободна</h4>
+            <br />
+        </div>
+
+        <div style="display: flex; justify-content: center; background-color: white; padding-top: 1%; bottom: 0; position: sticky;">
+            <p><a class="btn btn-primary" style="margin-right: 1.5rem;" href="/Rooms/Index">К списку</a></p>
+            <p><a class="btn btn-primary" style="margin-right: 1.5rem;" th:href="@{'/Rooms/Edit/' + ${room.id}}">Изменить</a></p>
+            <p><a class="btn btn-primary" th:href="@{'/Rooms/Delete/' + ${room.id}}">Удалить</a></p>
+        </div>
+
+        <br/>
+        <hr/>
+        <footer></footer>
+    </div>
+
+    <script src="/Scripts/jquery-3.4.1.js"></script>
+    <script src="/Scripts/bootstrap.js"></script>
+    <script src="/Scripts/localization/messages_ru.js"></script>
+</body>
+</html>

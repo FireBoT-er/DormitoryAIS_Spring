@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="@{${title} + ' - Общежитие'}"></title>
+    <link href="/Content/bootstrap.css" rel="stylesheet"/>
+    <link href="/Content/headerfix.css" rel="stylesheet"/>
+    <link href="/Content/site.css" rel="stylesheet"/>
+    <script src="/Scripts/modernizr-2.8.3.js"></script>
+</head>
+<body>
+    <div th:replace="Shared/header::header"></div>
+
+    <div class="container body-content">
+        <h1 style="text-align: center;" th:text="${title}"></h1>
+
+        <br />
+        <table class="table table-bordered" style="margin-left: 5%; width: 90%;">
+            <tr>
+                <th style="width: 20%;">Фамилия</th>
+                <td th:text="${visitor.surname}"></td>
+            </tr>
+            <tr>
+                <th>Имя</th>
+                <td th:text="${visitor.name}"></td>
+            </tr>
+            <tr>
+                <th>Отчество</th>
+                <td th:text="${visitor.patronymic}"></td>
+            </tr>
+            <tr>
+                <th>Номер телефона</th>
+                <td th:text="${visitor.phone}"></td>
+            </tr>
+            <tr>
+                <th>Дата и время посещения</th>
+                <td th:text="${#temporals.format(visitor.dateVs,'dd.MM.yyyy')} + ' ' + ${#temporals.format(visitor.timeVs,'HH:mm')}"></td>
+            </tr>
+        </table>
+
+        <br />
+        <h2 th:if="${visitor.student.sex}" style="text-align: center;">Посещаемый</h2>
+        <h2 th:unless="${visitor.student.sex}" style="text-align: center;">Посещаемая</h2>
+
+        <br />
+        <div style="margin-left: 1.5%; display: flex; flex-wrap: wrap; justify-content: center;">
+            <div class="col-md-4" style="background-color: #e9e9e9; border-radius: 25px; padding-top: 1rem; padding-right: 1rem; margin-right: 2rem; margin-bottom: 2rem; width: 34rem;">
+                <div style="display: flex; justify-content: center;">
+                    <p style="font-weight: bold;" th:text="@{${visitor.student.surname} + ' ' + ${visitor.student.name} + ' ' + ${visitor.student.patronymic}}"></p>
+                </div>
+
+                <p style="text-align: center;"><a class="btn btn-default" target="_blank" th:href="@{'/Students/Details/' + ${visitor.student.id}}">Подробнее &raquo;</a></p>
+            </div>
+        </div>
+
+        <div style="display: flex; justify-content: center; background-color: white; padding-top: 1%; bottom: 0; position: sticky;">
+            <p><a class="btn btn-primary" style="margin-right: 1.5rem;" href="/Visitors/Index">К списку</a></p>
+            <p><a class="btn btn-primary" style="margin-right: 1.5rem;" th:href="@{'/Visitors/Edit/' + ${visitor.id}}">Изменить</a></p>
+            <p><a class="btn btn-primary" th:href="@{'/Visitors/Delete/' + ${visitor.id}}">Удалить</a></p>
+        </div>
+
+        <br/>
+        <hr/>
+        <footer></footer>
+    </div>
+
+    <script src="/Scripts/jquery-3.4.1.js"></script>
+    <script src="/Scripts/bootstrap.js"></script>
+    <script src="/Scripts/localization/messages_ru.js"></script>
+</body>
+</html>

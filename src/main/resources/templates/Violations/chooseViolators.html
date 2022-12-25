@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="@{${title} + ' - Общежитие'}"></title>
+    <link href="/Content/bootstrap.css" rel="stylesheet"/>
+    <link href="/Content/headerfix.css" rel="stylesheet"/>
+    <link href="/Content/site.css" rel="stylesheet"/>
+    <script src="/Scripts/modernizr-2.8.3.js"></script>
+</head>
+<body>
+    <div th:replace="Shared/header::header"></div>
+
+    <div class="container body-content">
+        <h2 th:text="${title}"></h2>
+
+        <form action="#" th:action="@{/Violations/Create/ChooseViolators}" th:object="${studentsToCEView}" method="post">
+            <table class="table">
+                <tr>
+                    <th></th>
+                    <th>Фамилия</th>
+                    <th>Имя</th>
+                    <th>Отчество</th>
+                    <th>Пол</th>
+                    <th>Дата рождения</th>
+                    <th>Номер зачётной книжки</th>
+                    <th>Номер комнаты</th>
+                </tr>
+                <tr th:each="studentToCEView : ${studentsToCEView}">
+                    <td>
+                        <input type="checkbox" name="violators" th:value="${studentToCEView.student.id}" />
+                    </td>
+                    <td th:text="${studentToCEView.student.surname}"></td>
+                    <td th:text="${studentToCEView.student.name}"></td>
+                    <td th:text="${studentToCEView.student.patronymic}"></td>
+                    <td>
+                        <span th:if="${studentToCEView.student.sex}">М</span>
+                        <span th:unless="${studentToCEView.student.sex}">Ж</span>
+                    </td>
+                    <td th:text="${#temporals.format(studentToCEView.student.birthday,'dd.MM.yyyy')}"></td>
+                    <td th:text="${studentToCEView.student.recordBookNumber}"></td>
+                    <td th:text="${studentToCEView.room.roomNumber}"></td>
+                </tr>
+            </table>
+
+            <input id="Description" name="description" type="hidden" th:value="${description}" />
+            <input id="Punishment" name="punishment" type="hidden" th:value="${punishment}" />
+            <input id="DateVl" name="dateVl" type="hidden" th:value="${dateVl}" />
+            <input id="TimeVl" name="timeVl" type="hidden" th:value="${timeVl}" />
+
+            <input type="submit" value="Готово" class="btn btn-default">
+            <br />
+            <br />
+            <span class="field-validation-error text-danger" th:text="${submitButtonError}"></span>
+        </form>
+
+        <div>
+            <a href="javascript:history.back()">Назад</a>
+        </div>
+
+        <hr/>
+        <footer></footer>
+    </div>
+
+    <script src="/Scripts/jquery-3.4.1.js"></script>
+    <script src="/Scripts/bootstrap.js"></script>
+    <script src="/Scripts/localization/messages_ru.js"></script>
+</body>
+</html>

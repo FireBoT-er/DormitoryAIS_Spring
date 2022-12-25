@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="@{${title} + ' - Общежитие'}"></title>
+    <link href="/Content/bootstrap.css" rel="stylesheet"/>
+    <link href="/Content/headerfix.css" rel="stylesheet"/>
+    <link href="/Content/site.css" rel="stylesheet"/>
+    <script src="/Scripts/modernizr-2.8.3.js"></script>
+</head>
+<body>
+    <div th:replace="Shared/header::header"></div>
+
+    <div class="container body-content">
+        <h2 th:text="${title}"></h2>
+
+        <form action="#" th:action="@{/IssuedInventories/Edit/}+${id}" th:object="${issuedInventory}" method="post">
+            <div class="form-horizontal">
+                <hr />
+
+                <input id="ID" type="hidden" th:field="*{id}" />
+                <input id="InventoryID" type="hidden" th:field="*{inventoryItem.id}" />
+                <input id="StudentID" type="hidden" th:field="*{student.id}" />
+
+                <div class="form-group">
+                    <label class="control-label col-md-2">Обладатель</label>
+                    <div class="col-md-10 checkbox">
+                        <a th:href="@{'/Students/Details/' + ${issuedInventory.student.id}}" target="_blank" th:text="@{${issuedInventory.student.surname} + ' ' + ${issuedInventory.student.name} + ' ' + ${issuedInventory.student.patronymic}}"></a>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label col-md-2">Вид</label>
+                    <div class="col-md-10 checkbox">
+                        <a th:href="@{'/Inventories/Details/' + ${issuedInventory.inventoryItem.id}}" target="_blank" th:text="${issuedInventory.inventoryItem.invType}"></a>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label col-md-2">Количество</label>
+                    <div class="col-md-10">
+                        <input class="form-control text-box single-line" id="IssCount" min="0" th:max="${issCountMax}" type="number" th:field="*{issCount}" />
+                        <span class="field-validation-valid text-danger" th:if="${#fields.hasErrors('issCount')}" th:errors="*{issCount}"></span>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label col-md-2">Дата выдачи</label>
+                    <div class="col-md-10">
+                        <input class="form-control text-box single-line" id="IssueDate" th:min="${issueDateMin}" type="date" th:field="*{issueDate}" />
+                        <span class="field-validation-valid text-danger" th:if="${#fields.hasErrors('issueDate')}" th:errors="*{issueDate}"></span>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label col-md-2">Дата сдачи</label>
+                    <div class="col-md-10">
+                        <input class="form-control text-box single-line" id="TurnInDate" th:max="${turnInDateMax}" type="date" th:field="*{turnInDate}" />
+                        <span class="field-validation-valid text-danger" th:if="${#fields.hasErrors('turnInDate')}" th:errors="*{turnInDate}"></span>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-md-offset-2 col-md-10">
+                        <input type="submit" value="Сохранить" class="btn btn-default" />
+                    </div>
+                </div>
+            </div>
+        </form>
+
+        <div>
+            <a href="javascript:history.back()">Назад</a>
+        </div>
+
+        <hr/>
+        <footer></footer>
+    </div>
+
+    <script src="/Scripts/jquery-3.4.1.js"></script>
+    <script src="/Scripts/bootstrap.js"></script>
+    <script src="/Scripts/localization/messages_ru.js"></script>
+</body>
+</html>

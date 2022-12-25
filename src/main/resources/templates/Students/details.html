@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="@{${title} + ' - Общежитие'}"></title>
+    <link href="/Content/bootstrap.css" rel="stylesheet"/>
+    <link href="/Content/headerfix.css" rel="stylesheet"/>
+    <link href="/Content/site.css" rel="stylesheet"/>
+    <script src="/Scripts/modernizr-2.8.3.js"></script>
+</head>
+<body>
+    <div th:replace="Shared/header::header"></div>
+
+    <div class="container body-content">
+        <h1 style="text-align: center;" th:text="${title}"></h1>
+
+        <br />
+        <table class="table table-bordered" style="margin-left: 5%; width: 90%;">
+            <tr>
+                <td colspan="2"></td>
+                <th style="text-align: center;">Фотография</th>
+            </tr>
+            <tr>
+                <th style="width: 20%;">Фамилия</th>
+                <td style="width: 30%;" th:text="${studentToView.student.surname}"></td>
+                <td rowspan="9">
+                    <a th:href="@{'/Students/ShowPhoto/' + ${studentToView.student.id}}" target="_blank">
+                        <img th:src="${photo}" style="max-width: 65%; max-height: 65%; display: block; margin: auto;">
+                    </a>
+                </td>
+            </tr>
+            <tr>
+                <th>Имя</th>
+                <td th:text="${studentToView.student.name}"></td>
+            </tr>
+            <tr>
+                <th>Отчество</th>
+                <td th:text="${studentToView.student.patronymic}"></td>
+            </tr>
+            <tr>
+                <th>Пол</th>
+                <td>
+                    <span th:if="${studentToView.student.sex}">Мужской</span>
+                    <span th:unless="${studentToView.student.sex}">Женский</span>
+                </td>
+            </tr>
+            <tr>
+                <th>Дата рождения</th>
+                <td th:text="${#temporals.format(studentToView.student.birthday,'dd.MM.yyyy')}"></td>
+            </tr>
+            <tr>
+                <th>Номер зачётной книжки</th>
+                <td th:text="${studentToView.student.recordBookNumber}"></td>
+            </tr>
+            <tr>
+                <th>Номер комнаты</th>
+                <td>
+                    <a th:text="${studentToView.room.roomNumber}" th:href="@{'/Rooms/Details/' + ${studentToView.room.id}}" target="_blank"></a>
+                </td>
+            </tr>
+            <tr>
+                <th>Дата заселения</th>
+                <td th:text="${#temporals.format(studentToView.checkInDate,'dd.MM.yyyy')}"></td>
+            </tr>
+            <tr>
+                <th>Дата выселения</th>
+                <td th:text="${#temporals.format(studentToView.checkOutDate,'dd.MM.yyyy')}"></td>
+            </tr>
+        </table>
+
+        <div th:unless="${isEvicted}">
+            <br />
+            <h2 style="text-align: center;">Соседи по комнате</h2>
+
+            <br />
+            <div th:if="${roommates.size() > 0}" style="margin-left: 1.5%; display: flex; flex-wrap: wrap; justify-content: center;">
+                <div th:each="roommate : ${roommates}" class="col-md-4" style="background-color: #e9e9e9; border-radius: 25px; padding-top: 1rem; padding-right: 1rem; margin-right: 2rem; margin-bottom: 2rem; width: 34rem;">
+                    <div style="display: flex; justify-content: center;">
+                        <p style="font-weight: bold;" th:text="@{${roommate.surname} + ' ' + ${roommate.name} + ' ' + ${roommate.patronymic}}"></p>
+                    </div>
+
+                    <p style="text-align: center;"><a class="btn btn-default" target="_blank" th:href="@{'/Students/Details/' + ${roommate.id}}">Подробнее &raquo;</a></p>
+                </div>
+            </div>
+            <div th:unless="${roommates.size() > 0}">
+                <h4 style="text-align: center;">Соседей нет</h4>
+            </div>
+        </div>
+
+        <div th:if="${studentToView.student.violations.size() > 0}">
+            <br />
+            <h2 style="text-align: center;">Нарушения</h2>
+
+            <br />
+            <div style="margin-left: 1.5%; display: flex; flex-wrap: wrap; justify-content: center;">
+                <div th:each="violation : ${studentToView.student.violations}" class="col-md-4" style="background-color: #e9e9e9; border-radius: 25px; padding-top: 1rem; padding-right: 1rem; margin-right: 2rem; margin-bottom: 2rem; width: 34rem;">
+                    <div style="display: flex;">
+                        <p style="font-weight: bold; margin-right: 0.4rem;">Описание:</p>
+                        <p th:text="${violation.description}"></p>
+                    </div>
+
+                    <div style="display: flex;">
+                        <p style="font-weight: bold; margin-right: 0.4rem;">Мера наказания:</p>
+                        <p th:text="${violation.punishment}"></p>
+                    </div>
+
+                    <div style="display: flex;">
+                        <p style="font-weight: bold; margin-right: 0.4rem;">Дата и время совершения:</p>
+                        <p th:text="${#temporals.format(violation.dateVl,'dd.MM.yyyy')} + ' ' + ${#temporals.format(violation.timeVl,'HH:mm')}"></p>
+                    </div>
+
+                    <p><a class="btn btn-default" target="_blank" th:href="@{'/Violations/Details/' + ${violation.id}}">Подробнее &raquo;</a></p>
+                </div>
+            </div>
+        </div>
+
+        <div th:if="${studentToView.student.visitors.size() > 0}">
+            <br />
+            <h2 style="text-align: center;">Посетители</h2>
+
+            <br />
+            <div style="margin-left: 1.5%; display: flex; flex-wrap: wrap; justify-content: center;">
+                <div th:each="visitor : ${studentToView.student.visitors}" class="col-md-4" style="background-color: #e9e9e9; border-radius: 25px; padding-top: 1rem; padding-right: 1rem; margin-right: 2rem; margin-bottom: 2rem; width: 34rem;">
+                    <div style="display: flex;">
+                        <p style="font-weight: bold; margin-right: 0.4rem;">ФИО:</p>
+                        <p th:text="@{${visitor.surname} + ' ' + ${visitor.name} + ' ' + ${visitor.patronymic}}"></p>
+                    </div>
+
+                    <div style="display: flex;">
+                        <p style="font-weight: bold; margin-right: 0.4rem;">Дата и время посещения:</p>
+                        <p th:text="${#temporals.format(visitor.dateVs,'dd.MM.yyyy')} + ' ' + ${#temporals.format(visitor.timeVs,'HH:mm')}"></p>
+                    </div>
+
+                    <p><a class="btn btn-default" target="_blank" th:href="@{'/Visitors/Details/' + ${visitor.id}}">Подробнее &raquo;</a></p>
+                </div>
+            </div>
+        </div>
+
+        <div th:if="${issuedInventories.size() > 0}">
+            <br />
+            <h2 style="text-align: center;">Выданный инвентарь</h2>
+
+            <br />
+            <div style="margin-left: 1.5%; display: flex; flex-wrap: wrap; justify-content: center;">
+                <div th:each="issuedInventory : ${issuedInventories}" class="col-md-4" style="background-color: #e9e9e9; border-radius: 25px; padding-top: 1rem; padding-right: 1rem; margin-right: 2rem; margin-bottom: 2rem; width: 34rem;">
+                    <div style="display: flex;">
+                        <p style="font-weight: bold; margin-right: 0.4rem;">Вид:</p>
+                        <p>
+                            <a th:href="@{'/Inventories/Details/' + ${issuedInventory.inventoryItem.id}}" target="_blank" th:text="${issuedInventory.inventoryItem.invType}"></a>
+                        </p>
+                    </div>
+
+                    <div style="display: flex;">
+                        <p style="font-weight: bold; margin-right: 0.4rem;">Количество:</p>
+                        <p th:text="${issuedInventory.issCount}"></p>
+                    </div>
+
+                    <div style="display: flex;">
+                        <p style="font-weight: bold; margin-right: 0.4rem;">Дата выдачи:</p>
+                        <p th:text="${#temporals.format(issuedInventory.issueDate,'dd.MM.yyyy')}"></p>
+                    </div>
+
+                    <div style="display: flex;">
+                        <p style="font-weight: bold; margin-right: 0.4rem;">Дата сдачи:</p>
+                        <p th:text="${#temporals.format(issuedInventory.turnInDate,'dd.MM.yyyy')}"></p>
+                    </div>
+
+                    <p><a class="btn btn-default" target="_blank" th:href="@{'/IssuedInventories/Details/' + ${issuedInventory.id}}">Подробнее &raquo;</a></p>
+                </div>
+            </div>
+        </div>
+
+        <div style="display: flex; justify-content: center; background-color: white; padding-top: 1%; bottom: 0; position: sticky;">
+            <p><a class="btn btn-primary" style="margin-right: 1.5rem;" href="/Students/Index">К списку</a></p>
+            <p><a class="btn btn-primary" style="margin-right: 1.5rem;" th:href="@{'/Students/Edit/' + ${studentToView.student.id}}">Изменить</a></p>
+            <p><a class="btn btn-primary" th:href="@{'/Students/Delete/' + ${studentToView.student.id}}">Удалить</a></p>
+        </div>
+
+        <br/>
+        <hr/>
+        <footer></footer>
+    </div>
+
+    <script src="/Scripts/jquery-3.4.1.js"></script>
+    <script src="/Scripts/bootstrap.js"></script>
+    <script src="/Scripts/localization/messages_ru.js"></script>
+</body>
+</html>

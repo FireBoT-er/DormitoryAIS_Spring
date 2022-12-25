@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="@{${title} + ' - Общежитие'}"></title>
+    <link href="/Content/bootstrap.css" rel="stylesheet"/>
+    <link href="/Content/headerfix.css" rel="stylesheet"/>
+    <link href="/Content/site.css" rel="stylesheet"/>
+    <script src="/Scripts/modernizr-2.8.3.js"></script>
+</head>
+<body>
+    <div th:replace="Shared/header::header"></div>
+
+    <div class="container body-content">
+        <h1 style="text-align: center;" th:text="${title}"></h1>
+
+        <br />
+        <table class="table table-bordered" style="margin-left: 32.5%; width: 35%;">
+            <tr>
+                <th style="width: 35%;">Вид</th>
+                <td>
+                    <a th:href="@{'/Inventories/Details/' + ${issuedInventory.inventoryItem.id}}" target="_blank" th:text="${issuedInventory.inventoryItem.invType}"></a>
+                </td>
+            </tr>
+            <tr>
+                <th>Количество</th>
+                <td th:text="${issuedInventory.issCount}"></td>
+            </tr>
+            <tr>
+                <th>Дата выдачи</th>
+                <td th:text="${#temporals.format(issuedInventory.issueDate,'dd.MM.yyyy')}"></td>
+            </tr>
+            <tr>
+                <th>Дата сдачи</th>
+                <td th:text="${#temporals.format(issuedInventory.turnInDate,'dd.MM.yyyy')}"></td>
+            </tr>
+            <tr>
+                <th>Обладатель</th>
+                <td>
+                    <a th:href="@{'/Students/Details/' + ${issuedInventory.student.id}}" target="_blank" th:text="@{${issuedInventory.student.surname} + ' ' + ${issuedInventory.student.name} + ' ' + ${issuedInventory.student.patronymic}}"></a>
+                </td>
+            </tr>
+        </table>
+
+        <div style="display: flex; justify-content: center; background-color: white; padding-top: 1%; bottom: 0; position: sticky;">
+            <p><a class="btn btn-primary" style="margin-right: 1.5rem;" href="/IssuedInventories/Index">К списку</a></p>
+            <p><a class="btn btn-primary" style="margin-right: 1.5rem;" th:href="@{'/IssuedInventories/Edit/' + ${issuedInventory.id}}">Изменить</a></p>
+            <p><a class="btn btn-primary" th:href="@{'/IssuedInventories/Delete/' + ${issuedInventory.id}}">Удалить</a></p>
+        </div>
+
+        <br/>
+        <hr/>
+        <footer></footer>
+    </div>
+
+    <script src="/Scripts/jquery-3.4.1.js"></script>
+    <script src="/Scripts/bootstrap.js"></script>
+    <script src="/Scripts/localization/messages_ru.js"></script>
+</body>
+</html>

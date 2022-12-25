@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="@{${title} + ' - Общежитие'}"></title>
+    <link href="/Content/bootstrap.css" rel="stylesheet"/>
+    <link href="/Content/headerfix.css" rel="stylesheet"/>
+    <link href="/Content/site.css" rel="stylesheet"/>
+    <script src="/Scripts/modernizr-2.8.3.js"></script>
+</head>
+<body>
+    <div th:replace="Shared/header::header"></div>
+
+    <div class="container body-content">
+        <h2 th:text="${title}"></h2>
+
+        <p>
+            <a href="/Employees/Create">Добавить</a>
+        </p>
+
+        <form action="#" th:action="@{/Employees/EmployeesSwitch}" th:object="${isWorkingNowOnly}" method="post">
+            <p>
+                <input th:checked="${isWorkingNowOnly}" id="isWorkingNowOnly" name="isWorkingNowOnly" onclick="this.form.submit();" type="checkbox" />
+                Только трудоустроенные
+            </p>
+        </form>
+
+        <table th:if="${employees.size() > 0}" class="table table-hover">
+            <tr>
+                <th>Фамилия</th>
+                <th>Имя</th>
+                <th>Отчество</th>
+                <th>Фотография</th>
+                <th>Должность</th>
+                <th>Трудоустроен(а)</th>
+                <th></th>
+            </tr>
+            <tr th:each="employee : ${employees}">
+                <td th:text="${employee.surname}"></td>
+                <td th:text="${employee.name}"></td>
+                <td th:text="${employee.patronymic}"></td>
+                <td>
+                    <a th:href="@{'/Employees/ShowPhoto/' + ${employee.id}}" target="_blank">Открыть</a>
+                </td>
+                <td th:text="${employee.empPosition}"></td>
+                <td>
+                    <span th:if="${employee.isWorkingNow}">Да</span>
+                    <span th:unless="${employee.isWorkingNow}">Нет</span>
+                </td>
+                <td>
+                    <a th:href="@{'/Employees/Edit/' + ${employee.id}}">Изменить</a> |
+                    <a th:href="@{'/Employees/Details/' + ${employee.id}}">Подробнее</a> |
+                    <a th:href="@{'/Employees/Delete/' + ${employee.id}}">Удалить</a>
+                </td>
+            </tr>
+        </table>
+
+        <br/>
+        <hr/>
+        <footer></footer>
+    </div>
+
+    <script src="/Scripts/jquery-3.4.1.js"></script>
+    <script src="/Scripts/bootstrap.js"></script>
+    <script src="/Scripts/localization/messages_ru.js"></script>
+</body>
+</html>

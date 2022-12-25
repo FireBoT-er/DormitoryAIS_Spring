@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="@{${title} + ' - Общежитие'}"></title>
+    <link href="/Content/bootstrap.css" rel="stylesheet"/>
+    <link href="/Content/headerfix.css" rel="stylesheet"/>
+    <link href="/Content/site.css" rel="stylesheet"/>
+    <script src="/Scripts/modernizr-2.8.3.js"></script>
+</head>
+<body>
+    <div th:replace="Shared/header::header"></div>
+
+    <div class="container body-content">
+        <h2 th:text="${title}"></h2>
+
+        <form action="#" th:action="@{/IssuedInventories/Create/ChooseInfo}" th:object="${issuedInventory}" method="post">
+            <div class="form-horizontal">
+                <hr />
+
+                <div class="form-group">
+                    <label class="control-label col-md-2">Количество</label>
+                    <div class="col-md-10">
+                        <input class="form-control text-box single-line" id="IssCount" min="1" th:max="${issCountMax}" type="number" th:field="*{issCount}" />
+                        <span class="field-validation-valid text-danger" th:text="${issCountError}"></span>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label col-md-2">Дата выдачи</label>
+                    <div class="col-md-10">
+                        <input class="form-control text-box single-line" id="IssueDate" th:min="${issueDateMin}" type="date" th:field="*{issueDate}" />
+                        <span class="field-validation-valid text-danger" th:text="${issueDateError}"></span>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label col-md-2">Дата сдачи</label>
+                    <div class="col-md-10">
+                        <input class="form-control text-box single-line" id="TurnInDate" th:max="${turnInDateMax}" type="date" th:field="*{turnInDate}" />
+                        <span class="field-validation-valid text-danger" th:text="${turnInDateError}"></span>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-md-offset-2 col-md-10">
+                        <input id="InventoryID" name="inventoryId" type="hidden" th:value="${inventoryId}" />
+                        <input id="StudentID" name="studentId" type="hidden" th:value="${studentId}" />
+                        <input type="submit" value="Готово" class="btn btn-default" />
+                    </div>
+                </div>
+            </div>
+        </form>
+
+        <div>
+            <a href="javascript:history.back()">Назад</a>
+        </div>
+
+        <hr/>
+        <footer></footer>
+    </div>
+
+    <script src="/Scripts/jquery-3.4.1.js"></script>
+    <script src="/Scripts/bootstrap.js"></script>
+    <script src="/Scripts/localization/messages_ru.js"></script>
+</body>
+</html>

@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="@{${title} + ' - Общежитие'}"></title>
+    <link href="/Content/bootstrap.css" rel="stylesheet"/>
+    <link href="/Content/headerfix.css" rel="stylesheet"/>
+    <link href="/Content/site.css" rel="stylesheet"/>
+    <script src="/Scripts/modernizr-2.8.3.js"></script>
+</head>
+<body>
+    <div th:replace="Shared/header::header"></div>
+
+    <div class="container body-content">
+        <h2 th:text="${title}"></h2>
+
+        <p>
+            <a href="/Rooms/Create">Добавить</a>
+        </p>
+
+        <table th:if="${rooms.size() > 0}" class="table table-hover">
+            <tr>
+                <th>Номер</th>
+                <th>Количество мест</th>
+                <th></th>
+            </tr>
+            <tr th:each="room : ${rooms}">
+                <td th:text="${room.roomNumber}"></td>
+                <td th:text="${room.beds}"></td>
+                <td>
+                    <a th:href="@{'/Rooms/Edit/' + ${room.id}}">Изменить</a> |
+                    <a th:href="@{'/Rooms/Details/' + ${room.id}}">Подробнее</a> |
+                    <a th:href="@{'/Rooms/Delete/' + ${room.id}}">Удалить</a>
+                </td>
+            </tr>
+        </table>
+
+        <br/>
+        <hr/>
+        <footer></footer>
+    </div>
+
+    <script src="/Scripts/jquery-3.4.1.js"></script>
+    <script src="/Scripts/bootstrap.js"></script>
+    <script src="/Scripts/localization/messages_ru.js"></script>
+</body>
+</html>

@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="@{${title} + ' - Общежитие'}"></title>
+    <link href="/Content/bootstrap.css" rel="stylesheet"/>
+    <link href="/Content/headerfix.css" rel="stylesheet"/>
+    <link href="/Content/site.css" rel="stylesheet"/>
+    <script src="/Scripts/modernizr-2.8.3.js"></script>
+</head>
+<body>
+    <div th:replace="Shared/header::header"></div>
+
+    <div class="container body-content">
+        <h2 th:text="${title}"></h2>
+
+        <p>
+            <a href="/Visitors/Create">Добавить</a>
+        </p>
+
+        <table th:if="${visitors.size() > 0}" class="table table-hover">
+            <tr>
+                <th>Фамилия</th>
+                <th>Имя</th>
+                <th>Отчество</th>
+                <th>Номер телефона</th>
+                <th>Дата и время посещения</th>
+                <th>Посещаемый(ая)</th>
+                <th></th>
+            </tr>
+            <tr th:each="visitor : ${visitors}">
+                <td th:text="${visitor.surname}"></td>
+                <td th:text="${visitor.name}"></td>
+                <td th:text="${visitor.patronymic}"></td>
+                <td th:text="${visitor.phone}"></td>
+                <td th:text="${#temporals.format(visitor.dateVs,'dd.MM.yyyy')} + ' ' + ${#temporals.format(visitor.timeVs,'HH:mm')}"></td>
+                <td>
+                    <a th:href="@{'/Students/Details/' + ${visitor.student.id}}" target="_blank" th:text="@{${visitor.student.surname} + ' ' + ${visitor.student.name} + ' ' + ${visitor.student.patronymic}}"></a>
+                </td>
+                <td>
+                    <a th:href="@{'/Visitors/Edit/' + ${visitor.id}}">Изменить</a> |
+                    <a th:href="@{'/Visitors/Delete/' + ${visitor.id}}">Удалить</a>
+                </td>
+            </tr>
+        </table>
+
+        <br/>
+        <hr/>
+        <footer></footer>
+    </div>
+
+    <script src="/Scripts/jquery-3.4.1.js"></script>
+    <script src="/Scripts/bootstrap.js"></script>
+    <script src="/Scripts/localization/messages_ru.js"></script>
+</body>
+</html>

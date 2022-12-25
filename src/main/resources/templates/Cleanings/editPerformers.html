@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="@{${title} + ' - Общежитие'}"></title>
+    <link href="/Content/bootstrap.css" rel="stylesheet"/>
+    <link href="/Content/headerfix.css" rel="stylesheet"/>
+    <link href="/Content/site.css" rel="stylesheet"/>
+    <script src="/Scripts/modernizr-2.8.3.js"></script>
+</head>
+<body>
+    <div th:replace="Shared/header::header"></div>
+
+    <div class="container body-content">
+        <h2 th:text="${title}"></h2>
+
+        <form action="#" th:action="@{/Cleanings/Edit/}+${id}+@{/EditPerformers}" th:object="${employees}" method="post">
+            <table class="table">
+                <tr>
+                    <th></th>
+                    <th>Фамилия</th>
+                    <th>Имя</th>
+                    <th>Отчество</th>
+                    <th>Должность</th>
+                    <th>Трудоустроен(а)</th>
+                </tr>
+                <tr th:each="employee : ${employees}">
+                    <td>
+                        <input type="checkbox" name="employees" th:value="${employee.id}" th:checked="${#lists.contains(employee.cleanings, cleaning)}" />
+                    </td>
+                    <td th:text="${employee.surname}"></td>
+                    <td th:text="${employee.name}"></td>
+                    <td th:text="${employee.patronymic}"></td>
+                    <td th:text="${employee.empPosition}"></td>
+                    <td>
+                        <span th:if="${employee.isWorkingNow}">Да</span>
+                        <span th:unless="${employee.isWorkingNow}">Нет</span>
+                    </td>
+                </tr>
+            </table>
+
+            <input id="ID" name="id" type="hidden" th:value="${id}" />
+            <input id="Date" name="date" type="hidden" th:value="${date}" />
+            <input id="Time" name="time" type="hidden" th:value="${time}" />
+            <input id="Cleaned" name="cleaned" type="hidden" th:value="${cleaned}" />
+
+            <input type="submit" value="Готово" class="btn btn-default">
+            <br />
+            <br />
+            <span class="field-validation-error text-danger" th:text="${submitButtonError}"></span>
+        </form>
+
+        <div>
+            <a href="javascript:history.back()">Назад</a>
+        </div>
+
+        <hr/>
+        <footer></footer>
+    </div>
+
+    <script src="/Scripts/jquery-3.4.1.js"></script>
+    <script src="/Scripts/bootstrap.js"></script>
+    <script src="/Scripts/localization/messages_ru.js"></script>
+</body>
+</html>

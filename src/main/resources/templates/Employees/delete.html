@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="@{${title} + ' - Общежитие'}"></title>
+    <link href="/Content/bootstrap.css" rel="stylesheet"/>
+    <link href="/Content/headerfix.css" rel="stylesheet"/>
+    <link href="/Content/site.css" rel="stylesheet"/>
+    <script src="/Scripts/modernizr-2.8.3.js"></script>
+</head>
+<body>
+    <div th:replace="Shared/header::header"></div>
+
+    <div class="container body-content">
+        <h2 th:text="${title}"></h2>
+
+        <h3>Вы уверены, что хотите удалить этого сотрудника?</h3>
+        <h5>Также будет удалена информация о его участии в уборках.</h5>
+        <div>
+            <hr />
+            <dl class="dl-horizontal">
+                <dt>Фамилия</dt>
+                <dd th:text="${employee.surname}"></dd>
+
+                <dt>Имя</dt>
+                <dd th:text="${employee.name}"></dd>
+
+                <dt>Отчество</dt>
+                <dd th:text="${employee.patronymic}"></dd>
+
+                <dt>Фотография</dt>
+                <dd>
+                    <a th:href="@{'/Employees/ShowPhoto/' + ${employee.id}}" target="_blank">Открыть</a>
+                </dd>
+
+                <dt>Должность</dt>
+                <dd th:text="${employee.empPosition}"></dd>
+
+                <dt>Трудоустроен(а)</dt>
+                <dd>
+                    <span th:if="${employee.isWorkingNow}">Да</span>
+                    <span th:unless="${employee.isWorkingNow}">Нет</span>
+                </dd>
+            </dl>
+
+            <form action="#" th:action="@{/Employees/Delete/}+${id}" method="post">
+                <div class="form-actions no-color">
+                    <input type="submit" value="Удалить" class="btn btn-default" /> |
+                    <a href="javascript:history.back()">Назад</a>
+                </div>
+            </form>
+        </div>
+
+        <hr/>
+        <footer></footer>
+    </div>
+
+    <script src="/Scripts/jquery-3.4.1.js"></script>
+    <script src="/Scripts/bootstrap.js"></script>
+    <script src="/Scripts/localization/messages_ru.js"></script>
+</body>
+</html>

@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="@{${title} + ' - Общежитие'}"></title>
+    <link href="/Content/bootstrap.css" rel="stylesheet"/>
+    <link href="/Content/headerfix.css" rel="stylesheet"/>
+    <link href="/Content/site.css" rel="stylesheet"/>
+    <script src="/Scripts/modernizr-2.8.3.js"></script>
+</head>
+<body>
+    <div th:replace="Shared/header::header"></div>
+
+    <div class="container body-content">
+        <h2 th:text="${title}"></h2>
+
+        <p>
+            <a href="/IssuedInventories/Create">Выдать инвентарь</a>
+        </p>
+
+        <table th:if="${issuedInventories.size() > 0}" class="table table-hover">
+            <tr>
+                <th>Вид</th>
+                <th>Количество</th>
+                <th>Дата выдачи</th>
+                <th>Дата сдачи</th>
+                <th>Обладатель</th>
+                <th></th>
+            </tr>
+            <tr th:each="issuedInventory : ${issuedInventories}">
+                <td>
+                    <a th:href="@{'/Inventories/Details/' + ${issuedInventory.inventoryItem.id}}" target="_blank" th:text="${issuedInventory.inventoryItem.invType}"></a>
+                </td>
+                <td th:text="${issuedInventory.issCount}"></td>
+                <td th:text="${#temporals.format(issuedInventory.issueDate,'dd.MM.yyyy')}"></td>
+                <td th:text="${#temporals.format(issuedInventory.turnInDate,'dd.MM.yyyy')}"></td>
+                <td>
+                    <a th:href="@{'/Students/Details/' + ${issuedInventory.student.id}}" target="_blank" th:text="@{${issuedInventory.student.surname} + ' ' + ${issuedInventory.student.name} + ' ' + ${issuedInventory.student.patronymic}}"></a>
+                </td>
+                <td>
+                    <a th:href="@{'/IssuedInventories/Edit/' + ${issuedInventory.id}}">Изменить</a> |
+                    <a th:href="@{'/IssuedInventories/Delete/' + ${issuedInventory.id}}">Удалить</a>
+                </td>
+            </tr>
+        </table>
+
+        <br/>
+        <hr/>
+        <footer></footer>
+    </div>
+
+    <script src="/Scripts/jquery-3.4.1.js"></script>
+    <script src="/Scripts/bootstrap.js"></script>
+    <script src="/Scripts/localization/messages_ru.js"></script>
+</body>
+</html>

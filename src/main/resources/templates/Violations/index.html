@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="@{${title} + ' - Общежитие'}"></title>
+    <link href="/Content/bootstrap.css" rel="stylesheet"/>
+    <link href="/Content/headerfix.css" rel="stylesheet"/>
+    <link href="/Content/site.css" rel="stylesheet"/>
+    <script src="/Scripts/modernizr-2.8.3.js"></script>
+</head>
+<body>
+    <div th:replace="Shared/header::header"></div>
+
+    <div class="container body-content">
+        <h2 th:text="${title}"></h2>
+
+        <p>
+            <a href="/Violations/Create">Добавить</a>
+        </p>
+
+        <table th:if="${violations.size() > 0}" class="table table-hover">
+            <tr>
+                <th>Описание</th>
+                <th>Мера наказания</th>
+                <th>Дата и время совершения</th>
+                <th>Нарушители</th>
+                <th></th>
+            </tr>
+            <tr th:each="violation : ${violations}">
+                <td th:text="${violation.description}"></td>
+                <td th:text="${violation.punishment}"></td>
+                <td th:text="${#temporals.format(violation.dateVl,'dd.MM.yyyy')} + ' ' + ${#temporals.format(violation.timeVl,'HH:mm')}"></td>
+                <td>
+                    <div th:each="student : ${violation.students}">
+                        <a th:href="@{'/Students/Details/' + ${student.id}}" target="_blank" th:text="@{${student.surname} + ' ' + ${student.name} + ' ' + ${student.patronymic}}"></a>
+                        <br/>
+                    </div>
+                </td>
+                <td>
+                    <a th:href="@{'/Violations/Edit/' + ${violation.id}}">Изменить</a> |
+                    <a th:href="@{'/Violations/Delete/' + ${violation.id}}">Удалить</a>
+                </td>
+            </tr>
+        </table>
+
+        <br/>
+        <hr/>
+        <footer></footer>
+    </div>
+
+    <script src="/Scripts/jquery-3.4.1.js"></script>
+    <script src="/Scripts/bootstrap.js"></script>
+    <script src="/Scripts/localization/messages_ru.js"></script>
+</body>
+</html>

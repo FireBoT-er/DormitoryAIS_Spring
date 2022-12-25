@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="@{${title} + ' - Общежитие'}"></title>
+    <link href="/Content/bootstrap.css" rel="stylesheet"/>
+    <link href="/Content/headerfix.css" rel="stylesheet"/>
+    <link href="/Content/site.css" rel="stylesheet"/>
+    <script src="/Scripts/modernizr-2.8.3.js"></script>
+</head>
+<body>
+    <div th:replace="Shared/header::header"></div>
+
+    <div class="container body-content">
+        <h2 th:text="${title}"></h2>
+
+        <form action="#" th:action="@{/Employees/Edit/}+${id}" th:object="${employee}" method="post" enctype="multipart/form-data">
+            <div class="form-horizontal">
+                <hr />
+
+                <input id="ID" type="hidden" th:field="*{id}" />
+
+                <div class="form-group">
+                    <label class="control-label col-md-2">Фамилия</label>
+                    <div class="col-md-10">
+                        <input class="form-control text-box single-line" id="Surname" type="text" th:field="*{surname}" />
+                        <span class="field-validation-valid text-danger" th:if="${#fields.hasErrors('surname')}" th:errors="*{surname}"></span>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label col-md-2">Имя</label>
+                    <div class="col-md-10">
+                        <input class="form-control text-box single-line" id="Name" type="text" th:field="*{name}" />
+                        <span class="field-validation-valid text-danger" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></span>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label col-md-2">Отчество</label>
+                    <div class="col-md-10">
+                        <input class="form-control text-box single-line" id="Patronymic" type="text" th:field="*{patronymic}" />
+                        <span class="field-validation-valid text-danger" th:if="${#fields.hasErrors('patronymic')}" th:errors="*{patronymic}"></span>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label col-md-2">Фотография (новая)</label>
+                    <div class="col-md-10">
+                        <input type="file" name="upload" accept=".jpg, .jpeg, .png" />
+                        <input id="PhotoFileName" type="hidden" th:field="*{photoFileName}" />
+                        <span class="field-validation-valid text-danger" th:text="${photoFileNameError}"></span>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label col-md-2">Должность</label>
+                    <div class="col-md-10">
+                        <input class="form-control text-box single-line" id="EmpPosition" type="text" th:field="*{empPosition}" />
+                        <span class="field-validation-valid text-danger" th:if="${#fields.hasErrors('empPosition')}" th:errors="*{empPosition}"></span>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label col-md-2">Трудоустроен(а)</label>
+                    <div class="col-md-10">
+                        <div class="checkbox">
+                            <input class="check-box" id="IsWorkingNow" name="IsWorkingNow" style="margin-left: 0" type="checkbox" th:checked="*{isWorkingNow}" />
+                            <span class="field-validation-valid text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-md-offset-2 col-md-10">
+                        <input type="submit" value="Сохранить" class="btn btn-default" />
+                    </div>
+                </div>
+            </div>
+        </form>
+
+        <div>
+            <a href="javascript:history.back()">Назад</a>
+        </div>
+
+        <hr/>
+        <footer></footer>
+    </div>
+
+    <script src="/Scripts/jquery-3.4.1.js"></script>
+    <script src="/Scripts/bootstrap.js"></script>
+    <script src="/Scripts/localization/messages_ru.js"></script>
+</body>
+</html>
